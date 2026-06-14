@@ -37,3 +37,17 @@ Drivers/CMSIS/RTOS/
 Drivers/CMSIS/RTOS2/
 Drivers/CMSIS/Core_A/
 Drivers/CMSIS/docs/
+Drivers/CMSIS/Core/
+Drivers/CMSIS/Lib/
+Drivers/CMSIS/LICENSE.txt
+
+# Local资料 / 备份 / 导出内容
+24bcacc2-477e-49bd-a216-f7e48a4684b8.png
+generated_faces/
+MDK-ARM/Pet/
+MDK-ARM/Servo.c
+MDK-ARM/Servo.h
+MDK-ARM/startup_stm32f103xb.s
+pcb原理图/
+开源版本/
+解释/

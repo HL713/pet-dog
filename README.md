@@ -15,3 +15,5 @@ STM32F103C8T6-based quadruped robot dog with voice control (ASRPRO), OLED displa
 - The project is generated from CubeMX and built with Keil MDK-ARM.
 - Keep custom logic inside `/* USER CODE BEGIN */` blocks when regenerating.
 - Build outputs under `MDK-ARM/` should stay untracked.
+- This repository is the source repository only.
+- Local reference material such as `开源版本/`, `解释/`, and `pcb原理图/` is kept outside version control and excluded by `.gitignore`.
