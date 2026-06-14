@@ -1,55 +1,39 @@
-# Prerequisites
-*.d
+# STM32CubeMX / Keil MDK build outputs
+MDK-ARM/**/Objects/
+MDK-ARM/**/Listings/
+MDK-ARM/**/Output/
+MDK-ARM/**/Debug/
+MDK-ARM/**/Release/
+MDK-ARM/**/*.axf
+MDK-ARM/**/*.hex
+MDK-ARM/**/*.map
+MDK-ARM/**/*.htm
+MDK-ARM/**/*.lnp
+MDK-ARM/**/*.crf
+MDK-ARM/**/*.d
+MDK-ARM/**/*.o
+MDK-ARM/**/*.iex
+MDK-ARM/**/*.dep
+MDK-ARM/**/*.bak
+MDK-ARM/**/*.lst
+MDK-ARM/**/*.uvoptx
+MDK-ARM/**/*.uvguix.*
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+# Python cache
+__pycache__/
+*.pyc
 
-# Linker output
-*.ilk
-*.map
-*.exp
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.bak
 
-# Precompiled Headers
-*.gch
-*.pch
-
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
-
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
-
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
-
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
-
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
-
-# debug information files
-*.dwo
+# Unused CMSIS example/test trees
+Drivers/CMSIS/DSP/
+Drivers/CMSIS/NN/
+Drivers/CMSIS/RTOS/
+Drivers/CMSIS/RTOS2/
+Drivers/CMSIS/Core_A/
+Drivers/CMSIS/docs/
