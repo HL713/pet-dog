@@ -16,10 +16,18 @@
 #define DOG_FORWARD_END_MS     120U
 #define DOG_ACTION_STEP_MS     120U
 #define DOG_ACTION_CENTER_MS    90U
+#define DOG_RELIEF_FAST_MS      50U
+#define DOG_RELIEF_MID_MS       70U
+#define DOG_RELIEF_SWAY_MS      90U
+#define DOG_RELIEF_SETTLE_MS    60U
 #define DOG_BACKWARD_BIAS_US    30U
+#define DOG_SERVO_45          1250U
+#define DOG_SERVO_135         1750U
 #define DOG_SERVO_60          1200U
 #define DOG_SERVO_90          1500U
 #define DOG_SERVO_120         1800U
+#define DOG_TAIL_LEFT         1250U
+#define DOG_TAIL_RIGHT        1750U
 
 typedef struct
 {
@@ -42,6 +50,7 @@ static DogState_t s_currentState = DOG_STATE_IDLE;
 static DogState_t s_activeState = DOG_STATE_IDLE;
 static uint8_t s_activeFrame = 0U;
 static uint32_t s_nextFrameTick = 0U;
+static const uint8_t *s_lastFace = NULL;
 
 static const DogMotionFrame_t s_idleFrames[] =
 {
@@ -132,6 +141,23 @@ static const DogMotionFrame_t s_tailWagFrames[] =
     DOG_POSE(1500U, 1500U, 1500U, 1500U, 1500U, g_blinkFrames[2], DOG_ACTION_CENTER_MS),
 };
 
+static const DogMotionFrame_t s_reliefPressureFrames[] =
+{
+    /*
+     * Relief pressure:
+     * keep the body in a compact safe range, but alternate the weight
+     * diagonally and add short forward/backward nudges so it looks jittery.
+     */
+    DOG_POSE(DOG_SERVO_90,  DOG_SERVO_135, DOG_SERVO_45,  DOG_SERVO_90,  DOG_TAIL_LEFT,  g_faceExcited, DOG_RELIEF_SETTLE_MS),
+    DOG_POSE(DOG_SERVO_135, DOG_SERVO_90,  DOG_SERVO_90,  DOG_SERVO_45,  DOG_TAIL_RIGHT, g_faceAngry,   DOG_RELIEF_FAST_MS),
+    DOG_POSE(DOG_SERVO_45,  DOG_SERVO_135, DOG_SERVO_135, DOG_SERVO_45,  DOG_TAIL_LEFT,  g_faceHappy,   DOG_RELIEF_FAST_MS),
+    DOG_POSE(DOG_SERVO_90,  DOG_SERVO_90,  DOG_SERVO_90,  DOG_SERVO_90,  DOG_TAIL_RIGHT, g_faceCute,    DOG_RELIEF_MID_MS),
+    DOG_POSE(DOG_SERVO_135, DOG_SERVO_45,  DOG_SERVO_45,  DOG_SERVO_135, DOG_TAIL_LEFT,  g_faceExcited, DOG_RELIEF_SWAY_MS),
+    DOG_POSE(DOG_SERVO_45,  DOG_SERVO_135, DOG_SERVO_135, DOG_SERVO_45,  DOG_TAIL_RIGHT, g_faceAngry,   DOG_RELIEF_SWAY_MS),
+    DOG_POSE(DOG_SERVO_90,  DOG_SERVO_90,  DOG_SERVO_90,  DOG_SERVO_90,  DOG_TAIL_LEFT,  g_faceHappy,   DOG_RELIEF_SETTLE_MS),
+    DOG_POSE(DOG_SERVO_135, DOG_SERVO_45,  DOG_SERVO_45,  DOG_SERVO_135, DOG_TAIL_RIGHT, g_faceCute,    DOG_RELIEF_FAST_MS),
+};
+
 static const DogMotionSequence_t s_idleSequence =
 {
     s_idleFrames, 1U, 0U
@@ -182,11 +208,22 @@ static const DogMotionSequence_t s_tailWagSequence =
     s_tailWagFrames, 4U, 1U
 };
 
+static const DogMotionSequence_t s_reliefPressureSequence =
+{
+    s_reliefPressureFrames, 8U, 1U
+};
+
 static void DogMotion_ShowFace(const uint8_t *face)
 {
-    OLED_Clear();
+    if (face == s_lastFace)
+    {
+        return;
+    }
+
+    OLED_ClearArea(DOG_FACE_X, DOG_FACE_Y, FACE_WIDTH, FACE_HEIGHT);
     OLED_ShowImage(DOG_FACE_X, DOG_FACE_Y, FACE_WIDTH, FACE_HEIGHT, face);
-    OLED_Update();
+    OLED_UpdateArea(DOG_FACE_X, DOG_FACE_Y, FACE_WIDTH, FACE_HEIGHT);
+    s_lastFace = face;
 }
 
 static void DogMotion_ApplyFrame(const DogMotionFrame_t *frame)
@@ -228,6 +265,8 @@ static const DogMotionSequence_t *DogMotion_GetSequence(DogState_t state)
             return &s_angrySequence;
         case DOG_STATE_TAIL_WAG:
             return &s_tailWagSequence;
+        case DOG_STATE_RELIEF_PRESSURE:
+            return &s_reliefPressureSequence;
         case DOG_STATE_IDLE:
         default:
             return &s_idleSequence;
@@ -252,6 +291,7 @@ void DogMotion_Init(void)
     s_activeState = DOG_STATE_IDLE;
     s_activeFrame = 0U;
     s_nextFrameTick = 0U;
+    s_lastFace = NULL;
 
     Servo_StopAll();
     DogMotion_SetCurrentFrame(DOG_STATE_IDLE, 0U);
@@ -268,6 +308,7 @@ void DogMotion_SetState(DogState_t state)
     s_activeState = state;
     s_activeFrame = 0U;
     s_nextFrameTick = 0U;
+    s_lastFace = NULL;
 
     DogMotion_SetCurrentFrame(s_activeState, 0U);
 }

@@ -19,6 +19,8 @@ static DogCommand_t ASR_CodeToCommand(uint8_t code)
             return DOG_CMD_FORWARD;
         case ASR_CODE_BACKWARD:
             return DOG_CMD_BACKWARD;
+        case ASR_CODE_STAND:
+            return DOG_CMD_STAND;
         case ASR_CODE_SIT:
             return DOG_CMD_SIT;
         case ASR_CODE_STRETCH:
@@ -29,6 +31,9 @@ static DogCommand_t ASR_CodeToCommand(uint8_t code)
             return DOG_CMD_ANGRY;
         case ASR_CODE_TAIL_WAG:
             return DOG_CMD_TAIL_WAG;
+        case ASR_CODE_RELIEF_PRESSURE:
+            return DOG_CMD_RELIEF_PRESSURE;
+		
         default:
             return DOG_CMD_NONE;
     }

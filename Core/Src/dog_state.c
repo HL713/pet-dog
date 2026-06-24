@@ -40,6 +40,9 @@ void DogState_SetCommand(DogCommand_t command)
         case DOG_CMD_TAIL_WAG:
             s_targetState = DOG_STATE_TAIL_WAG;
             break;
+        case DOG_CMD_RELIEF_PRESSURE:
+            s_targetState = DOG_STATE_RELIEF_PRESSURE;
+            break;
         case DOG_CMD_IDLE:
         default:
             s_targetState = DOG_STATE_IDLE;

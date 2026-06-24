@@ -10,22 +10,28 @@
 #include "asr.h"
 #include "dog_state.h"
 #include "dog_motion.h"
+#include "face_data.h"
 /* USER CODE END Includes */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 
 /* USER CODE BEGIN 0 */
+#define APP_TEST_RELIEF_PRESSURE_ONLY 0
+
 static void App_ShowBootScreen(void)
 {
     OLED_Clear();
-    OLED_ShowString(0, 0, "PETDOG", OLED_8X16);
-    OLED_ShowString(0, 24, "READY", OLED_8X16);
+    OLED_ShowImage(32, 0, FACE_WIDTH, FACE_HEIGHT, g_faceSleep);
     OLED_Update();
 }
 
 static void App_HandleAsrCommand(void)
 {
+#if APP_TEST_RELIEF_PRESSURE_ONLY
+    return;
+#endif
+
     DogCommand_t command = ASR_GetLastCommand();
 
     if (command == DOG_CMD_NONE)
@@ -70,7 +76,13 @@ int main(void)
     ASR_Init();
     DogState_Init();
     DogMotion_Init();
+#if APP_TEST_RELIEF_PRESSURE_ONLY
+    DogState_SetCommand(DOG_CMD_RELIEF_PRESSURE);
+#else
     DogState_SetCommand(DOG_CMD_IDLE);
+#endif
+    DogState_Task(HAL_GetTick());
+    App_SyncMotionState();
     App_ShowBootScreen();
     HAL_Delay(500);
     /* USER CODE END 2 */
@@ -78,8 +90,10 @@ int main(void)
     /* USER CODE BEGIN WHILE */
     while (1)
     {
+#if !APP_TEST_RELIEF_PRESSURE_ONLY
         ASR_Task();
         App_HandleAsrCommand();
+#endif
         DogState_Task(HAL_GetTick());
         App_SyncMotionState();
         DogMotion_Task(HAL_GetTick());

@@ -19,7 +19,8 @@ typedef enum
     DOG_STATE_STRETCH,
     DOG_STATE_HAPPY,
     DOG_STATE_ANGRY,
-    DOG_STATE_TAIL_WAG
+    DOG_STATE_TAIL_WAG,
+    DOG_STATE_RELIEF_PRESSURE
 } DogState_t;
 
 void DogState_Init(void);

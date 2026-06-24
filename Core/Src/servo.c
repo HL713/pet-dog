@@ -36,11 +36,11 @@ static const ServoChannelMap_t ServoChannelMap[SERVO_COUNT] =
 
 static ServoCalib_t s_servoCalib[SERVO_COUNT] =
 {
-    { 1000U, 1500U, 2000U,  1 },
-    { 1000U, 1500U, 2000U,  1 },
-    { 1000U, 1500U, 2000U,  1 },
-    { 1000U, 1500U, 2000U,  1 },
-    { 1000U, 1500U, 2000U,  1 },
+    { 500U, 1500U, 2500U,  1 },
+    { 500U, 1500U, 2500U,  1 },
+    { 500U, 1500U, 2500U,  1 },
+    { 500U, 1500U, 2500U,  1 },
+    { 500U, 1500U, 2500U,  1 },
 };
 
 static uint16_t Servo_ClampPulse(uint16_t pulseUs)

@@ -19,7 +19,8 @@ typedef enum
     DOG_CMD_STRETCH,
     DOG_CMD_HAPPY,
     DOG_CMD_ANGRY,
-    DOG_CMD_TAIL_WAG
+    DOG_CMD_TAIL_WAG,
+    DOG_CMD_RELIEF_PRESSURE
 } DogCommand_t;
 
 typedef enum
@@ -33,7 +34,8 @@ typedef enum
     ASR_CODE_STRETCH   = 0x07U,
     ASR_CODE_HAPPY     = 0x08U,
     ASR_CODE_ANGRY     = 0x09U,
-    ASR_CODE_TAIL_WAG  = 0x0AU
+    ASR_CODE_TAIL_WAG  = 0x0AU,
+    ASR_CODE_RELIEF_PRESSURE = 0x0BU
 } AsrCommandCode_t;
 
 void ASR_Init(void);

@@ -206,4 +206,9 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
   ASR_UartRxCpltCallback(huart);
 }
 
+void USART3_IRQHandler(void)
+{
+  HAL_UART_IRQHandler(&huart3);
+}
+
 /* USER CODE END 1 */
